@@ -1,9 +1,9 @@
 package common;
 
 public enum Status {
-    bad(-1),
-    open(0),
-    close(1);
+    BAD(-1),
+    OPEN(0),
+    CLOSE(1);
 
     private int val;
 

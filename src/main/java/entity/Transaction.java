@@ -4,6 +4,7 @@ import common.Status;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Date;
 import java.util.Map;
 
 @Data
@@ -17,5 +18,9 @@ public class Transaction {
     Status status;
 
     Map<Long, Double> data;
+
+    Date dateOpen;
+
+    Date statusDate;
 
 }
