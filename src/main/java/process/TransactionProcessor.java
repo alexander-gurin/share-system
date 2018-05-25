@@ -2,7 +2,9 @@ package process;
 
 import common.Status;
 import entity.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repository.TransactionService;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,6 +12,9 @@ import java.util.stream.Stream;
 
 @Service
 public class TransactionProcessor {
+
+    @Autowired
+    TransactionService transactionService;
 
     public double getTransactionSum(Transaction t) {
         return t.getData().values().stream().mapToDouble(Double::doubleValue).sum();
@@ -43,7 +48,15 @@ public class TransactionProcessor {
         Transaction t = new Transaction();
         t.setId(id);
         t.setData(data);
-        changeTransactionStatus(t, Status.OPEN);
+        boolean res = changeTransactionStatus(t, Status.OPEN);
+
+        if (!res) {
+            res = changeTransactionStatus(t, Status.BAD);
+
+            return t;
+        }
+
+        transactionService.addTrunsaction(t);
 
         return t;
     }
@@ -52,6 +65,8 @@ public class TransactionProcessor {
         Map<Long, Double> res = Stream.of(t.getData(), data).flatMap(m -> m.entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, Math::max));
         t.setData(res);
+
+        transactionService.updateTransactionData(t.getId(), t.getData());
 
         return t;
     }

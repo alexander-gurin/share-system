@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"entity", "process"})
+@ComponentScan(basePackages = {"entity", "process", "repository"})
 public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
